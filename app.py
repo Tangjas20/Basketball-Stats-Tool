@@ -1,4 +1,5 @@
-from constants import TEAMS, PLAYERS
+from constants import TEAMS
+from constants import PLAYERS
 
 
 def change_height():        #Changes the string to int values
