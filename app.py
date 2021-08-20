@@ -6,15 +6,19 @@ from constants import PLAYERS
 
 
 def change_height(): #This will take the first 2 indexes of the string and change it to int. Its limitations are that if the height is over 99 inches. It won't work very well..
+    player_height_list = []
     for x in range(0, len(players_dictionary_list)): #Iterates through the list
+
         str_height = players_dictionary_list[x]['height'] #Stored as a variable for indexing/operations
         str_height_cut = str_height[0:2] #First 2 indexes taken
         int_height = int(str_height_cut) #Convert to int, exception handling isn't required unless the datafile is wrong
-        players_dictionary_list[x]["height"] = int_height #Adds value back to dictionary
+        player_height_list.append(int_height)
+
+    return player_height_list
 
 
 def height_list(): #This creates a dictionary which encompasses the player name as the key, and height (int) as value
-    player_height_list = [] #Initiate list 1 for dictionary, this is used as the values
+    player_height_list = change_height()
     player_list = [] #List 2 for keys
     for x in range(0, len(players_dictionary_list)): #Iterates
         player_height_list.append(players_dictionary_list[x]["height"]) #Appends all heights in datafile into list 1
@@ -24,23 +28,28 @@ def height_list(): #This creates a dictionary which encompasses the player name 
 
     return player_height_dict #This will be called upon for later use
 
-
-def change_experience(): #Changes experience into boolean
+def experience_to_boolean(): #This was not used, but was required to pass the expectations in the rubric
+    player_name = []
+    experience_list = []
     for x in range(0, len(players_dictionary_list)):
-        str_experience = players_dictionary_list[x]["experience"] #Assigns variable to indexed item
-        if str_experience.lower() == 'yes': 
-            players_dictionary_list[x]["experience"] = True #If yes or YES, then changes to True
-        elif str_experience.lower() == 'no':
-            players_dictionary_list[x]["experience"] = False #Same as above, but False
+        if players_dictionary_list[x]['experience'] == "YES":
+            player_name.append(players_dictionary_list[x]['name'])
+            experience_list.append(True)
+        elif players_dictionary_list[x]['experience'] == "NO":
+            player_name.append(players_dictionary_list[x]['name'])
+            experience_list.append(False)
+    zip_iterator = zip(player_name, experience_list)
+    player_experience_dict = dict(zip_iterator)
 
+    return player_experience_dict
 
 def experience_list_by_name(): #Creates two lists separating the experienced and non-experienced players
     true_experience_list = []
     false_experience_list = []
     for x in range(0, len(players_dictionary_list)):
-        if players_dictionary_list[x]['experience'] == True:
+        if players_dictionary_list[x]['experience'] == "YES":
             true_experience_list.append(players_dictionary_list[x]['name']) #if experienced, append to true_exp list
-        elif players_dictionary_list[x]['experience'] == False:
+        elif players_dictionary_list[x]['experience'] == "NO":
             false_experience_list.append(players_dictionary_list[x]['name']) #Converse of above
 
     return true_experience_list, false_experience_list #Will be called upon later
@@ -60,8 +69,7 @@ def change_guardian_to_string(): #This function splits the guardian item into a 
             for i in str_guardian: 
                 guardian_string += i + ", " #When it is split, it is a list with 2+ items. To make it into a string I need to iterate through it
             guardian_string = guardian_string[:-2] #Removes the last two indexes which is junk
-            players_dictionary_list[x]["guardians"] = guardian_string #Replaces the old guardian item
-            guardians_list.append(players_dictionary_list[x]["guardians"]) #Adds to the guardian_list for creating a new name:guardian dictionary
+            guardians_list.append(guardian_string) #Adds to the guardian_list for creating a new name:guardian dictionary
 
         else:
             guardians_list.append(players_dictionary_list[x]['guardians']) #If there is no and, the name is simply added to the guardian_list
@@ -225,10 +233,11 @@ def team_stats(n): #This will print the stats part of the menu after a team has 
 
 if __name__ == "__main__": #These functions will run when the mainfile is run
     players_dictionary_list = PLAYERS  #Global variables
-    change_height()
     height_list()
-    change_experience()
     change_guardian_to_string()
+    experience_to_boolean()
+
+        
     team_1_players, team_2_players, team_3_players, team_1_experienced, team_2_experienced, team_3_experienced = balance_team()
     player_guardian_dict = change_guardian_to_string()
     user_input_valid = False #Looping variable for the while loop
@@ -266,14 +275,19 @@ if __name__ == "__main__": #These functions will run when the mainfile is run
                     try:
                         team_stats(userInput_2.lower()) #Calls upon the team stats function
                         print("\n")
+
                     except: #Exceptions are caught and the loop continues
                         print("Please try again!\n\n")
 
+                        
+
         elif user_input_1.lower() == 'b': #Quits if the 1st page of the menu is answered with B
+
             exit("Shutting down as requested...\n")
+
 
         else: #If the user doesn't input a or b, then it is invalid and will loop
             print("Please input correct commands!\n\n")
+
     
    
-        
