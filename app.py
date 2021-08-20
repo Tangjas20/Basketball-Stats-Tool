@@ -3,7 +3,7 @@
 
 from constants import TEAMS  #Imports data file
 from constants import PLAYERS 
-
+import copy
 
 def change_height(): #This will take the first 2 indexes of the string and change it to int. Its limitations are that if the height is over 99 inches. It won't work very well..
     player_height_list = []
@@ -232,7 +232,7 @@ def team_stats(n): #This will print the stats part of the menu after a team has 
 
 
 if __name__ == "__main__": #These functions will run when the mainfile is run
-    players_dictionary_list = PLAYERS  #Global variables
+    players_dictionary_list = copy.deepcopy(PLAYERS)  #Global variables
     height_list()
     change_guardian_to_string()
     experience_to_boolean()
@@ -288,6 +288,3 @@ if __name__ == "__main__": #These functions will run when the mainfile is run
 
         else: #If the user doesn't input a or b, then it is invalid and will loop
             print("Please input correct commands!\n\n")
-
-    
-   
